@@ -5,9 +5,11 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class HubTopBehaviour : MonoBehaviour
 {
-
+    //Size of the playable hub space (in meters)
     public int x_size;
     public int y_size;
+
+    //Reference to the floor prototype object
     private GameObject prototype_floor = null;
 
 
@@ -15,6 +17,7 @@ public class HubTopBehaviour : MonoBehaviour
     void Awake()
     {
         prototype_floor = gameObject.transform.Find("Floor").gameObject;
+        prototype_floor.GetComponent<Renderer>().sharedMaterial.color = new Color(127, 127, 0);
     }
 
     // Start is called before the first frame update
