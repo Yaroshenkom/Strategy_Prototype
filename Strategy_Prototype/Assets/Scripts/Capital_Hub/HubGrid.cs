@@ -19,6 +19,7 @@ public class HubGrid : MonoBehaviour
     public int grid_size_y;
     //List of grid nodes (each element of the list has 2-dimensional coordinates)
     List<GridNode> listOfNodes = new List<GridNode>(1);
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -29,15 +30,14 @@ public class HubGrid : MonoBehaviour
     void Update()
     {
         if (listOfNodes.Count != 0 ) listOfNodes.Clear();
-        BuildGrid(gameObject.GetComponent<HubTopBehaviour>().x_size, gameObject.GetComponent<HubTopBehaviour>().x_size);
-        DrawGrid();
+        BuildGrid(gameObject.GetComponent<HubTopBehaviour>().x_size, gameObject.GetComponent<HubTopBehaviour>().y_size);
     }
 
     void BuildGrid(float max_xf, float max_yf)
     {
-        Vector3 zero_point = gameObject.transform.position + (new Vector3(-max_xf/2, 2f, -max_yf/2));
-        grid_size_x = (int)(max_xf/grid_step) + 1;
-        grid_size_y = (int)(max_yf/grid_step) + 1;
+        Vector3 zero_point = gameObject.transform.position; 
+        grid_size_x = (int)(max_xf/grid_step);
+        grid_size_y = (int)(max_yf/grid_step);
         for (int i = 0; i <= grid_size_x; i++)
         {
             for (int j = 0; j <= grid_size_y; j++)
@@ -56,21 +56,23 @@ public class HubGrid : MonoBehaviour
         listOfNodes.Clear();
     }
 
-    void DrawGrid()
+    /// Callback to draw gizmos that are pickable and always drawn.
+    void OnDrawGizmos()
     {
-        for (int i = 0; i < grid_size_x; i++)
+        for (int i = 0; i <= grid_size_x; i++)
         {
             Gizmos.color = Color.black;
-            Vector3 From = listOfNodes.Find(x => ((x.x == i) && (x.y == 0))).real_position;
-            Vector3 To = listOfNodes.Find(x => ((x.x == i) && (x.y == grid_size_y))).real_position;
+            Vector3 From = listOfNodes.Find(node => ((node.x == i) && (node.y == 0))).real_position;
+            Vector3 To = listOfNodes.Find(node => ((node.x == i) && (node.y == grid_size_y))).real_position;
             Gizmos.DrawLine(From, To);
         }
-        for (int i = 0; i < grid_size_y; i++)
+        for (int i = 0; i <= grid_size_y; i++)
         {
             Gizmos.color = Color.black;
-            Vector3 From = listOfNodes.Find(x => ((x.y == i) && (x.x == 0))).real_position;
-            Vector3 To = listOfNodes.Find(x => ((x.y == i) && (x.y == grid_size_x))).real_position;
+            Vector3 From = listOfNodes.Find(node => ((node.y == i) && (node.x == 0))).real_position;
+            Vector3 To = listOfNodes.Find(node => ((node.y == i) && (node.x == grid_size_x))).real_position;
             Gizmos.DrawLine(From, To);
         }
     }
+    
 }
